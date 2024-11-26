@@ -1,2 +1,1 @@
-# S9P_Programowanie_full_stack_w_chmurze_obliczeniowej
-Programowanie full-stack w chmurze obliczeniowej
+<h1 align="center"> Programowanie full-stack w chmurze obliczeniowej </h1>
