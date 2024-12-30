@@ -1,0 +1,45 @@
+WWWGROUP / WWWUSER
+
+cat /etc/hosts
+
+extra_hosts:
+  - 'host.docker.internal:host-gateway'
+
+host.docker.internal => nazwa hosta
+host-gateway => adres IP bramy
+
+
+ports:
+  - '${APP_PORT:-80}:80'
+  - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+
+Vite => Kit do współpracy z frameworkami fron-endowymi, Vue, React, ...
+
+environment:
+    WWWUSER: '${WWWUSER}'
+    LARAVEL_SAIL: 1
+    XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+    XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+    IGNITION_LOCAL_SITES_PATH: '${PWD}'
+
+XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}' => PHP Xdebug extension
+
+IGNITION_LOCAL_SITES_PATH: '${PWD}' => Zwraca ścieżkę do aktualnego położenia. miejsce w którym wykonywany jest Docker.\
+
+healthcheck:
+    test:
+        - CMD
+        - mysqladmin
+        - ping
+        - '-p${DB_PASSWORD}'
+    retries: 3
+    timeout: 5s
+
+retries: 3 c=> maxymalna liczba prób na które kontener moze nie odpowiedzieć, po braku odpowiedzi na 3 pingi kontener zostanie uznany za unhealthy
+timeout: 5s => maxymalny czas przeznaczony na healthcheck. Jezeli czas trwania healthchecka przekroczy 5 sekund kontener zostanie uznany za unhealthy
+    
+networks:
+    sail:
+        driver: bridge
+
+        sieć do komunikacji pomiędzy kontenerami i siecią zewnętrzną

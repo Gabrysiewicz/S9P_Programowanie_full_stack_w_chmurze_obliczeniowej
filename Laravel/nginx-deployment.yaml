@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: nginx.conf
+        - name: nginx-snippets
+          mountPath: /etc/nginx/snippets/fastcgi-php.conf
+          subPath: fastcgi-php.conf
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+      - name: nginx-snippets
+        configMap:
+          name: nginx-snippets
+      - name: app-storage
+        emptyDir: {}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    server {
+      listen 80;
+      server_name localhost;
+
+      root /var/www/html/public;
+      index index.php index.html index.htm;
+
+      location / {
+          try_files $uri $uri/ /index.php?$query_string;
+      }
+
+      location ~ \.php$ {
+          include snippets/fastcgi-php.conf;
+          fastcgi_pass laravel:9000;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          include fastcgi_params;
+      }
+
+      location ~ /\.(ht|git|svn|env) {
+          deny all;
+      }
+
+      # Serve static files
+      location ~* \.(css|js|jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2)$ {
+          try_files $uri =404;
+          expires max;
+          access_log off;
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-snippets
+data:
+  fastcgi-php.conf: |
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_param PATH_INFO $fastcgi_path_info;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_index index.php;
+    include fastcgi_params;

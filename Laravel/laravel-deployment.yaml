@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-deployment
+  labels:
+    app: laravel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: laravel
+  template:
+    metadata:
+      labels:
+        app: laravel
+    spec:
+      containers:
+      - name: laravel
+        image: hehexa/laravel-app:latest
+        ports:
+        - containerPort: 9000
+        envFrom:
+        - secretRef:
+            name: laravel-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: laravel
+spec:
+  selector:
+    app: laravel
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+  type: ClusterIP
