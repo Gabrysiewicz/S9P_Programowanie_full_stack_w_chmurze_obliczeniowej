@@ -256,3 +256,35 @@ spec:
   type: ClusterIP
 
 ```
+
+Terminal 1
+```
+➜  Laravel git:(main) ✗ minikube tunnel
+✅  Tunnel successfully started
+
+📌  NOTE: Please do not close this terminal as this process must stay alive for the tunnel to be accessible ...
+
+❗  The service/ingress nginx-ingress-ingress-nginx-controller requires privileged ports to be exposed: [80 443]
+🔑  sudo permission will be asked for it.
+🏃  Starting tunnel for service nginx-ingress-ingress-nginx-controller.
+❗  The service/ingress laravel requires privileged ports to be exposed: [80]
+🔑  sudo permission will be asked for it.
+🏃  Starting tunnel for service laravel.
+[sudo] password for warden: ❗  The service/ingress ingress requires privileged ports to be exposed: [80 443]
+🔑  sudo permission will be asked for it.
+❗  The service/ingress laravel-app requires privileged ports to be exposed: [80 443]
+🏃  Starting tunnel for service ingress.
+🔑  sudo permission will be asked for it.
+❗  The service/ingress laravel-ingress requires privileged ports to be exposed: [80 443]
+🏃  Starting tunnel for service laravel-app.
+🔑  sudo permission will be asked for it.
+❗  The service/ingress app-dev-ingress requires privileged ports to be exposed: [80 443]
+🏃  Starting tunnel for service laravel-ingress.
+🔑  sudo permission will be asked for it.
+🏃  Starting tunnel for service app-dev-ingress.
+```
+
+Terminal 2
+```
+kubectl port-forward deployment/nginx-deployment 8080:80
+```
