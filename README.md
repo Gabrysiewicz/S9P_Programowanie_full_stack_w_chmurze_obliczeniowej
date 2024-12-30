@@ -288,3 +288,8 @@ Terminal 2
 ```
 kubectl port-forward deployment/nginx-deployment 8080:80
 ```
+
+Browser
+```
+http://localhost:8080/
+```
