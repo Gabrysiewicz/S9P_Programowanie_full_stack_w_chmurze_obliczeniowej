@@ -112,6 +112,30 @@ spec:
 
 ```
 
+laravel-secret.yaml
+```
+apiVersion: v1
+data:
+  APP_DEBUG: ZmFsc2U=
+  APP_ENV: bG9jYWw=
+  APP_KEY: YmFzZTY0OjJhUUFwZEp1djlibVNjbXJ3SDIvOGM3QzJtZTcyVjZnR3FDaTI1c3RnVms9
+  DB_DATABASE: bGFyYXZlbA==
+  DB_HOST: bXlzcWw=
+  DB_PASSWORD: cGFzc3dvcmQ=
+  DB_USERNAME: c2FpbA==
+kind: Secret
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"APP_DEBUG":"ZmFsc2U=","APP_ENV":"bG9jYWw=","APP_KEY":"YmFzZTY0OjJhUUFwZEp1djlibVNjbXJ3SDIvOGM3QzJtZTcyVjZnR3FDaTI1c3RnVms9","DB_DATABASE":"bGFyYXZlbA==","DB_HOST":"bXlzcWw=","DB_PASSWORD":"cGFzc3dvcmQ=","DB_USERNAME":"c2FpbA=="},"kind":"Secret","metadata":{"annotations":{},"name":"laravel-secret","namespace":"default"},"type":"Opaque"}
+  creationTimestamp: "2024-12-30T11:39:35Z"
+  name: laravel-secret
+  namespace: dev
+  resourceVersion: "170545"
+  uid: 4f64e4a4-8795-496e-b875-96f7258e755d
+type: Opaque
+```
+
 nginx-deployment:
 ```
 apiVersion: apps/v1
@@ -254,6 +278,21 @@ spec:
       port: 3306
       targetPort: 3306
   type: ClusterIP
+
+```
+
+mysql-pvc.yaml
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
 
 ```
 
