@@ -1,0 +1,24 @@
+@import 'root.css';
+#search-bar-section{
+    flex-basis: 100%;
+    display: flex;
+    justify-content: center;
+
+    padding: 100px 0;
+    background-color: var(--background-color-listing);
+    box-shadow: 0 0 25px -5px var(--background-color-listing);
+}
+#search-bar-section form{
+    flex-basis: 50%;
+    display: flex;
+    flex-wrap: nowrap;
+    /* box-shadow: 0 0 5px 5px rgb(0, 255, 85); */
+}
+#search{
+    flex-basis: 90%;
+    font-size: 150%;
+}
+#search-submit{
+    flex-basis: 10%;
+    font-size: 150%;
+}

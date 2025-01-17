@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: laravel
+  template:
+    metadata:
+      labels:
+        app: laravel
+    spec:
+      containers:
+      - name: laravel
+        image: hehexa/laravel-app:latest
+        ports:
+        - containerPort: 9000
+        env:
+        - name: DB_CONNECTION
+          value: mysql
+        - name: DB_HOST
+          value: mysql
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_DATABASE
+          value: laravel
+        - name: DB_USERNAME
+          value: root
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+        volumeMounts:
+        - name: storage-volume
+          mountPath: /var/www/html/storage/app/public
+      volumes:
+      - name: storage-volume
+        persistentVolumeClaim:
+          claimName: storage-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: laravel-app
+spec:
+  ports:
+  - port: 9000
+  selector:
+    app: laravel
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

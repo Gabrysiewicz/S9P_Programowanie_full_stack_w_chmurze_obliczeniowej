@@ -1,0 +1,76 @@
+@import 'root.css';
+body{
+    /* overflow-x: hidden; */
+}
+#section-offert{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* width: 100%; */
+    /* box-shadow: inset 0 0 5px var(--hover-color); */
+}
+#profile-picture{
+    position: absolute;
+    top:310px;
+
+    /* box-shadow: 0 0 5px 5px var(--hover-color); */
+}
+#background-image{
+    width:  100%; /*or 70%, or what you want*/
+    height: 350px; /*or 70%, or what you want*/
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#intro{
+    display: flex;
+    flex-direction: column;
+    padding: 0 25px 25px 25px;
+    margin: -7px 0 0 0;
+    align-items: center;
+    background-color: var(--palette-a);
+    z-index: 0;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+
+    /* box-shadow:  0 0px 5px 1px var(--palette-d); */
+}
+#intro h1, 
+#description h2, 
+#description h3, 
+#description h4, 
+#description h5, 
+#description h6 {
+    color: var(--text-color);
+}
+#details{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+    width: 100%;
+    border-radius: 0;
+    margin: 25px 0 0 0;
+}
+#description{
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+    /* margin: 25px; */
+    box-sizing: border-box;
+    padding: 2%;
+    background-color: var(--palette-a);
+    /* box-shadow: inset 0 0 15px var(--hover-color); */
+}
+#description-text{
+    padding: 5%;
+    color: var(--text-color);
+}
+#description-text-blank{
+    font-size: 120%;
+    color:var(--text-color);
+}

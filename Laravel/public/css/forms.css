@@ -1,0 +1,97 @@
+@import 'root.css';
+#section-create-form, 
+#section-edit-form, 
+#section-register-form,
+#section-login-form{
+    display: flex;
+    flex-direction: column;
+
+    width: 30%;
+
+    box-sizing: border-box;
+}
+#section-create-form h1,
+#section-edit-form h1, 
+#section-register-form h1,
+#section-login-form h1{
+    /* box-shadow: inset 0 0 5px green; */
+    padding: 7% 0;
+    background-color: var(--background-color);
+    color:var(--text-color);
+    border-radius: 25px;
+    box-shadow: 0 0 5px 1px var(--static-background-grey);
+    text-align: center;
+}
+#section-create-form form, 
+#section-edit-form form , 
+#section-register-form form,
+#section-login-form form{
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background-color: var(--background-color);
+    color:var(--text-color);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    box-shadow: 0 0 5px 1px var(--static-background-grey);
+
+}
+#section-create-form form div,
+#section-edit-form form div, 
+#section-register-form form div,
+#section-login-form form div{
+    display: flex;
+    flex-direction: column;
+}
+#section-create-form form .row, #section-edit-form form .row{
+    flex-direction: row;
+}
+#section-create-form form label, #section-edit-form form label{
+    /* width: 10%; */
+}
+#section-create-form form input[type='text'], 
+#section-create-form form textarea, 
+#section-create-form form input[type='submit'],
+#section-edit-form form input[type='text'], 
+#section-edit-form form textarea, 
+#section-edit-form form input[type='submit'],
+#section-register-form form input[type='text'],
+#section-register-form form input[type='email'], 
+#section-register-form form input[type='password'], 
+#section-register-form form input[type='submit'],
+#section-login-form form input[type='email'], 
+#section-login-form form input[type='password'], 
+#section-login-form form input[type='submit']{
+    width: 90%;
+    align-self:center;
+    font-size: 110%;
+    
+    box-shadow: inset 0 0 1px red;
+}
+.row input[type='checkbox']{
+    margin: 0 0 0 20px;
+    width: 20px;
+    height: 20px;
+}
+.row label{
+    margin: 0 0 0 15px;
+}
+#section-create-form form input,
+#section-edit-form form input,
+#section-register-form form input,
+#section-login-form form input{
+    margin: 10px 0;
+}
+#section-create-form form input[type='submit'],
+#section-edit-form form input[type='submit'],
+#section-register-form form input[type='submit'],
+#section-login-form form input[type='submit']{
+    /* font-size: 120%; */
+    background-color: white;
+}
+
+textarea{
+    resize: none;
+}
