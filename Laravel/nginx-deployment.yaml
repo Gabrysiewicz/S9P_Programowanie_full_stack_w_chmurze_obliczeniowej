@@ -1,3 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    server {
+        listen 80;
+        server_name localhost;
+        root /var/www/html/public;
+        index index.php index.html;
+
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass laravel-app:9000;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+
+        # Serve static files directly
+        location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+            expires max;
+            log_not_found off;
+        }
+
+        location ~ /\.ht {
+            deny all;
+        }
+
+        # Handle storage files
+        location /storage {
+            alias /var/www/html/storage/app/public;
+            try_files $uri $uri/ =404;
+            expires max;
+            access_log off;
+        }
+    }
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,10 +63,15 @@ spec:
         - name: nginx-config
           mountPath: /etc/nginx/conf.d/default.conf
           subPath: nginx.conf
+        - name: app-files
+          mountPath: /var/www/html
       volumes:
       - name: nginx-config
         configMap:
           name: nginx-config
+      - name: app-files
+        persistentVolumeClaim:
+          claimName: app-files-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -38,33 +85,21 @@ spec:
   selector:
     app: nginx
 ---
-apiVersion: v1
-kind: ConfigMap
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: nginx-config
-data:
-  nginx.conf: |
-    server {
-        listen 80;
-        server_name localhost;
-        root /var/www/html/public;
-        index index.php index.html;
-
-        location / {
-            try_files $uri $uri/ /index.php?$query_string;
-        }
-
-        location ~ \.php$ {
-            fastcgi_pass laravel-app:9000;
-            fastcgi_index index.php;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include fastcgi_params;
-        }
-        # Handle storage files
-        location /storage {
-            alias /var/www/html/storage/app/public;
-            try_files $uri $uri/ =404;
-            expires max;
-            access_log off;
-        }
-    }
+  name: laravel-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80

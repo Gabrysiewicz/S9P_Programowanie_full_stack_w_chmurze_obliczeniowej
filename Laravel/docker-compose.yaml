@@ -1,10 +1,10 @@
 version: '3'
 services:
-  app:
+  laravel-app:
     build:
       context: .
       dockerfile: Dockerfile
-    image: my-app:latest
+    image: laravel-app:latest
     volumes:
       - .:/var/www/html
     networks:
@@ -36,7 +36,7 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - .:/var/www/html
     depends_on:
-      - app
+      - laravel-app
     networks:
       - swarm
 
